@@ -3,8 +3,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
-import alertFunc from './modules/alertFunc';
-import { message, anotherMessage } from './modules/text';
+// import alertFunc from './modules/alertFunc';
+// import { message, anotherMessage } from './modules/text';
 
 Vue.config.productionTip = false;
 
@@ -14,5 +14,5 @@ new Vue({
   render: (h) => h(App),
 }).$mount('#app');
 
-alertFunc(message);
-alertFunc(anotherMessage);
+// alertFunc(message);
+// alertFunc(anotherMessage);
