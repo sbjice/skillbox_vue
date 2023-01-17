@@ -31,16 +31,7 @@
 
       <fieldset class="form__block">
         <legend class="form__legend">Цвет</legend>
-        <ul class="colors">
-          <li class="colors__item" v-for="color in colors" :key="color.id">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color"
-              v-model="currentColorId" :checked="color.id === 1" :value="color.id">
-              <span class="colors__value" :style="`background-color: ${color.value};`">
-              </span>
-            </label>
-          </li>
-        </ul>
+        <ColorPicker :color-id.sync="currentColorId"/>
       </fieldset>
 
       <fieldset class="form__block">
@@ -122,10 +113,14 @@
 <script>
 import categories from '@/data/categories';
 import colors from '@/data/colors';
+import ColorPicker from './ColorPicker.vue';
 
 export default {
   props: ['priceFrom', 'priceTo', 'categoryId', 'colorId'],
   name: 'ProductFilter',
+  components: {
+    ColorPicker,
+  },
   data() {
     return {
       currentPriceFrom: 0,

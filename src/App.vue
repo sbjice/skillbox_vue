@@ -12,10 +12,10 @@
 
     <div class="content__catalog">
       <ProductFilter
-        :priceFrom.sync="filterPriceFrom"
-        :priceTo.sync="filterPriceTo"
-        :categoryId.sync="filterCategoryId"
-        :colorId.sync="filterColorId"
+        :price-from.sync="filterPriceFrom"
+        :price-to.sync="filterPriceTo"
+        :category-id.sync="filterCategoryId"
+        :color-id.sync="filterColorId"
         />
 
       <section class="catalog">
