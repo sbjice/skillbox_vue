@@ -18,15 +18,7 @@
 
       <fieldset class="form__block">
         <legend class="form__legend">Категория</legend>
-        <label class="form__label form__label--select">
-          <select class="form__select" type="text" name="category"
-          v-model.number="currentCategoryId">
-            <option value="0">Все категории</option>
-            <option v-for="category in categories"
-            :key="category.id"
-            :value="category.id" >{{ category.title }}</option>
-          </select>
-        </label>
+        <CategorySelect :category-id.sync="currentCategoryId"/>
       </fieldset>
 
       <fieldset class="form__block">
@@ -111,14 +103,14 @@
 </template>
 
 <script>
-import categories from '@/data/categories';
-import colors from '@/data/colors';
+import CategorySelect from './CategorySelect.vue';
 import ColorPicker from './ColorPicker.vue';
 
 export default {
   props: ['priceFrom', 'priceTo', 'categoryId', 'colorId'],
   name: 'ProductFilter',
   components: {
+    CategorySelect,
     ColorPicker,
   },
   data() {
@@ -128,14 +120,6 @@ export default {
       currentCategoryId: 0,
       currentColorId: 0,
     };
-  },
-  computed: {
-    categories() {
-      return categories;
-    },
-    colors() {
-      return colors;
-    },
   },
   watch: {
     priceFrom(value) {
