@@ -1,8 +1,8 @@
 <template>
-  <div class="form__counter">
+  <div class="form__counter" :class="(optionalClass || '')">
     <button type="button" aria-label="Убрать один товар"
       @click.prevent="decrease()">
-      <svg width="12" height="12" fill="currentColor">
+      <svg :width="size" :height="size" fill="currentColor">
         <use xlink:href="#icon-minus"></use>
       </svg>
     </button>
@@ -13,7 +13,7 @@
 
     <button type="button" aria-label="Добавить один товар"
       @click.prevent="increase()">
-      <svg width="12" height="12" fill="currentColor">
+      <svg :width="size" :height="size" fill="currentColor">
         <use xlink:href="#icon-plus"></use>
       </svg>
     </button>
@@ -23,7 +23,14 @@
 <script>
 
 export default {
-  props: ['productAmount'],
+  props: {
+    productAmount: Number,
+    size: {
+      type: Number,
+      default: 12,
+    },
+    optionalClass: String,
+  },
   watch: {
     productAmount(value) {
       this.currentAmount = value;
@@ -31,7 +38,7 @@ export default {
   },
   data() {
     return {
-      currentAmount: 1,
+      currentAmount: this.productAmount,
     };
   },
   methods: {
