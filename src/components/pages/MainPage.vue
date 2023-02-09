@@ -13,6 +13,16 @@
       <ProductFilter :price-from.sync="filterPriceFrom" :price-to.sync="filterPriceTo"
         :category-id.sync="filterCategoryId" :color-id.sync="filterColorId" />
 
+      <div v-if="this.productsLoading" class="cssload-thecube">
+        <div class="cssload-cube cssload-c1"></div>
+        <div class="cssload-cube cssload-c2"></div>
+        <div class="cssload-cube cssload-c4"></div>
+        <div class="cssload-cube cssload-c3"></div>
+      </div>
+      <div v-if="this.productsLoadingFailed">Произошла ошибка при загрузке товаров
+        <button @click.prevent="loadProducts">Попробовать снова</button>
+      </div>
+
       <section class="catalog">
         <ProductList :products="products"/>
         <BasePagination v-model="page" :count="countProducts" :per-page="productsPerPage" />
@@ -41,6 +51,8 @@ export default {
       productsPerPage: 3,
 
       productsData: null,
+      productsLoading: false,
+      productsLoadingFailed: false,
     };
   },
   components: {
@@ -63,6 +75,8 @@ export default {
   },
   methods: {
     loadProducts() {
+      this.productsLoading = true;
+      this.productsLoadingFailed = false;
       clearTimeout(this.loadProductsTimeout);
       this.loadProductsTimeout = setTimeout(() => {
         axios
@@ -77,7 +91,11 @@ export default {
             },
           })
           // eslint-disable-next-line no-return-assign
-          .then((response) => this.productsData = response.data);
+          .then((response) => this.productsData = response.data)
+          // eslint-disable-next-line no-return-assign
+          .catch(() => this.productsLoadingFailed = true)
+          // eslint-disable-next-line no-return-assign
+          .then(() => this.productsLoading = false);
       }, 0);
     },
   },
