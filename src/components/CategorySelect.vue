@@ -12,7 +12,8 @@
 </template>
 
 <script>
-import categories from '@/data/categories';
+import axios from 'axios';
+import API_BASE_URL from '@/config';
 
 export default {
   props: ['categoryId'],
@@ -20,6 +21,7 @@ export default {
   data() {
     return {
       currentCategoryId: 0,
+      categoriesData: null,
     };
   },
   watch: {
@@ -29,13 +31,25 @@ export default {
   },
   computed: {
     categories() {
-      return categories;
+      return this.categoriesData ? this.categoriesData.items : [];
     },
   },
   methods: {
     changeCategory() {
       this.$emit('update:categoryId', this.currentCategoryId);
     },
+    loadCategories() {
+      clearTimeout(this.loadCategoriesTimeout);
+      this.loadCategoriesTimeout = setTimeout(() => {
+        axios
+          .get(`${API_BASE_URL}/api/productCategories`)
+          // eslint-disable-next-line no-return-assign
+          .then((response) => this.categoriesData = response.data);
+      }, 0);
+    },
+  },
+  created() {
+    this.loadCategories();
   },
 };
 </script>

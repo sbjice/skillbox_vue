@@ -15,7 +15,8 @@
 </template>
 
 <script>
-import colors from '@/data/colors';
+import axios from 'axios';
+import API_BASE_URL from '@/config';
 
 export default {
   props: ['colorId'],
@@ -23,6 +24,7 @@ export default {
   data() {
     return {
       currentColorId: 0,
+      colorsData: null,
     };
   },
   watch: {
@@ -32,7 +34,12 @@ export default {
   },
   computed: {
     colors() {
-      return colors;
+      return this.colorsData
+        ? this.colorsData.items.map((color) => ({
+          ...color,
+          value: color.code,
+        }))
+        : [];
     },
   },
   methods: {
@@ -40,6 +47,18 @@ export default {
       this.$emit('update:colorId', this.currentColorId);
       console.log(this.currentColorId);
     },
+    loadColors() {
+      clearTimeout(this.loadColorsTimeout);
+      this.loadColorsTimeout = setTimeout(() => {
+        axios
+          .get(`${API_BASE_URL}/api/colors`)
+          // eslint-disable-next-line no-return-assign
+          .then((response) => this.colorsData = response.data);
+      }, 0);
+    },
+  },
+  created() {
+    this.loadColors();
   },
 };
 </script>
