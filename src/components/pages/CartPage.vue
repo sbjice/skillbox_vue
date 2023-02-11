@@ -1,5 +1,12 @@
 <template>
-  <main class="content container">
+  <div>
+    <div v-if="$store.state.cartProductsLoading" class="cssload-thecube">
+      <div class="cssload-cube cssload-c1"></div>
+      <div class="cssload-cube cssload-c2"></div>
+      <div class="cssload-cube cssload-c4"></div>
+      <div class="cssload-cube cssload-c3"></div>
+    </div>
+    <main v-else class="content container">
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
@@ -48,7 +55,9 @@
         </div>
       </form>
     </section>
-  </main>
+    </main>
+  </div>
+
 </template>
 
 <script>
