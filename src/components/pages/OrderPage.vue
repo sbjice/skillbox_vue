@@ -4,14 +4,14 @@
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="index.html">
+          <router-link class="breadcrumbs__link" :to="{ name: 'main' }">
             Каталог
-          </a>
+          </router-link>
         </li>
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="cart.html">
+          <router-link class="breadcrumbs__link" :to="{ name: 'cart' }">
             Корзина
-          </a>
+          </router-link>
         </li>
         <li class="breadcrumbs__item">
           <a class="breadcrumbs__link">
@@ -182,8 +182,10 @@ export default {
             },
           },
         )
-        .then(() => {
+        .then((response) => {
           this.$store.commit('resetCart');
+          this.$store.commit('updateOrderInfo', response.data);
+          this.$router.push({ name: 'orderInfo', params: { id: response.data.id } });
         })
         .catch((error) => {
           this.formError = error.response.data.error.request || {};
