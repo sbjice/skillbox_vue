@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import numberFormat from '@/helpers/numberFromat';
 
 export default {
@@ -109,35 +109,47 @@ export default {
   data() {
     return {
       orderInfo: {},
+      products: [],
+      totalPrice: 0,
+      totalAmount: 0,
     };
   },
   methods: {
     ...mapActions(['loadOrderInfo']),
+    getOrderData() {
+      this.orderInfo = this.$store.state.orderInfo;
+      this.products = this.orderInfo.basket.items.map(
+        (item) => ({
+          productId: item.product.id,
+          amount: item.quantity,
+          product: {
+            ...item.product,
+            image: item.product.image.file.url,
+          },
+        }),
+      );
+      this.totalPrice = this.products
+        .reduce((acc, item) => (item.product.price * item.amount) + acc, 0);
+      this.totalAmount = this.products
+        .reduce((acc, item) => item.amount + acc, 0);
+    },
   },
   watch: {
     '$route.params.id': {
       handler() {
         if (this.$store.state.orderInfo
             && this.$store.state.orderInfo.id === this.$route.params.id) {
-          this.orderInfo = this.$store.state.orderInfo;
+          this.getOrderData();
           return;
         }
 
-        this
-          .loadOrderInfo(this.$route.params.id)
+        this.$store.dispatch('loadOrderInfo', this.$route.params.id)
           .then(() => {
-            this.orderInfo = this.$store.state.orderInfo;
+            this.getOrderData();
           });
       },
       immediate: true,
     },
-  },
-  computed: {
-    ...mapGetters({
-      products: 'orderProducts',
-      totalPrice: 'orderTotalPrice',
-      totalAmount: 'orderTotalAmount',
-    }),
   },
 };
 </script>

@@ -83,26 +83,6 @@ export default new Vuex.Store({
       return getters.cartDetailProducts
         .reduce((acc, item) => item.amount + acc, 0);
     },
-    orderProducts(state) {
-      return state.orderInfo.basket.items.map(
-        (item) => ({
-          productId: item.product.id,
-          amount: item.quantity,
-          product: {
-            ...item.product,
-            image: item.product.image.file.url,
-          },
-        }),
-      );
-    },
-    orderTotalPrice(state, getters) {
-      return getters.orderProducts
-        .reduce((acc, item) => (item.product.price * item.amount) + acc, 0);
-    },
-    orderTotalAmount(state, getters) {
-      return getters.orderProducts
-        .reduce((acc, item) => item.amount + acc, 0);
-    },
   },
   actions: {
     loadOrderInfo(context, orderId) {
