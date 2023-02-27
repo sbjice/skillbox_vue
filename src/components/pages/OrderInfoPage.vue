@@ -101,7 +101,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import numberFormat from '@/helpers/numberFromat';
 
 export default {
@@ -115,7 +114,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['loadOrderInfo']),
     getOrderData() {
       this.orderInfo = this.$store.state.orderInfo;
       this.products = this.orderInfo.basket.items.map(
@@ -142,7 +140,6 @@ export default {
           this.getOrderData();
           return;
         }
-
         this.$store.dispatch('loadOrderInfo', this.$route.params.id)
           .then(() => {
             this.getOrderData();
